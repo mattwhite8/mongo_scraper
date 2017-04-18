@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 //Require models
-
+var Article = require("./models/Article.js");
 //Scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
@@ -37,18 +37,29 @@ db.once("open", function(){
 
 app.get("/scraper", function(req, res){
   //Have to get the body of the HTML with request
-  request("https://cnet.com", function(err, response, html){
+  request("https://theverge.com", function(err, response, html){
     //Load html into cheerio
     var $ = cheerio.load(html);
     //Grab every a with class mainLink
-    $("a[class=mainLink]").each(function(i, element){
+    $("h2[class=c-entry-box--compact__title]").each(function(i, element){
 
       //Empty result object
       var result = {};
 
       //Add title text and link
-      result.title = $(this).attr("title");
-      result.link = $(this).attr("href");
+      result.title = $(this).children("a").text();
+      result.link = $(this).children("a").attr("href");
+
+      var newArticle = new Article(result);
+
+      newArticle.save(function(err, doc){
+          if(err){
+            console.log(err);
+          }else {
+            console.log(doc);
+          }
+      });
+
     });
   });
   res.send('done');
