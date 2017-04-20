@@ -20,12 +20,6 @@ app.set("view engine", "handlebars");
 
 var PORT = process.env.PORT || 3000;
 
-//Use morgan and body parser with the app
-// app.use(logger("dev"));
-// app.use(bodyParser.urlencoded({
-//   extended: false
-// }));
-
 //Make public a static dir
 app.use(express.static("app"));
 
@@ -42,13 +36,68 @@ db.once("open", function(){
 });
 
 app.get("/", function(req, res){
-  Article.find({}, function(err, doc){
+  Article.find({"favorite": false}, function(err, doc){
     var hbsobj = {
       articles: doc
     }
     console.log(hbsobj);
     res.render("index", hbsobj);
   });
+});
+
+app.get("/favorites", function(req, res){
+  Article.find({"favorite": true}, function(err, doc){
+    var hbsobj = {
+      articles: doc
+    }
+    console.log(hbsobj);
+    res.render("favorites", hbsobj);
+  });
+});
+
+app.post("/favorite/:id", function(req, res){
+  var articleID = req.params.id;
+  console.log(articleID);
+
+  Article.findOneAndUpdate({"_id":articleID}, {"favorite": true})
+  .exec(function(err, doc){
+    if(err){
+      console.log(err);
+    }else {
+      res.send(200);
+    }
+  })
+
+});
+
+app.post("/unfavorite/:id", function(req, res){
+  var articleID = req.params.id;
+  console.log(articleID);
+
+  Article.findOneAndUpdate({"_id":articleID}, {"favorite": false})
+  .exec(function(err, doc){
+    if(err){
+      console.log(err);
+    }else {
+      res.send(200);
+    }
+  })
+
+});
+
+app.get("/notes/:id", function(req, res){
+  var articleID = req.params.id;
+  console.log(articleID);
+  Article.findOne({"_id":articleID})
+  .populate("notes")
+  .exec(function(err, doc){
+    if(err){
+      console.log(err);
+    }else {
+      res.json(doc);
+    }
+  })
+
 });
 
 app.get("/test", function(req, res){
@@ -61,7 +110,7 @@ app.get("/test", function(req, res){
   //   }
   // });
 
-  var newNote = new Note({title: "test", body: "test"});
+  var newNote = new Note({body: "test"});
   newNote.save(function(err, doc){
     if (err) {
       console.log(err);

@@ -1,5 +1,4 @@
 <button id="scrape">Scrape</button>
-<button id="favorites"><a href="/favorites">Favorites</a></button>
 
 <div class="container">
   <div class="row">
@@ -31,7 +30,7 @@
             <li>
               <p data-id={{this._id}}>{{this.title}}</p>
               <a href={{this.link}}>{{this.link}}</a>
-              <button data-id={{this._id}} class="favorite">Favorite</button>
+              <button data-id={{this._id}} class="unfavorite">Unfavorite</button>
             </li>
       {{/each}}
     </ul>
