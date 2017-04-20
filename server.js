@@ -5,6 +5,7 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 //Require models
 var Article = require("./models/Article.js");
+var Note = require("./models/Note.js");
 //Scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
@@ -33,6 +34,47 @@ db.on("error", function(err){
 
 db.once("open", function(){
   console.log("Mongoose connection successful");
+});
+
+app.get("/test", function(req, res){
+  var newNote = new Note({title: "test", body: "test"});
+
+  newNote.save(function(err, doc){
+    if (err) {
+      console.log(err);
+    } else {
+      Article.findOneAndUpdate({"title":"test"}, {$push: {"notes": doc._id}})
+      .exec(function(err, doc){
+        if (err){
+          console.log(err);
+        }else {
+          res.json(doc);
+        }
+      });
+    }
+  });
+});
+
+app.get("/populate", function(req, res){
+  Article.findOne({"title":"test"})
+  .populate("notes")
+  .exec(function(err, doc){
+    if(err){
+      console.log(err);
+    }else {
+      res.json(doc);
+    }
+  })
+});
+
+app.get("/remove", function(req, res){
+  Note.remove({"_id":"58f8241081c775578cb9c022"}, function(err){
+    if(err){
+      console.log(err);
+    }else{
+      res.send('done');
+    }
+  });
 });
 
 app.get("/scraper", function(req, res){
