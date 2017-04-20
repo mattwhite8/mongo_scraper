@@ -18,6 +18,13 @@ var app = express();
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+// BodyParser makes it possible for our server to interpret data sent to it.
+// The code below is pretty standard.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+
 var PORT = process.env.PORT || 3000;
 
 //Make public a static dir
@@ -85,6 +92,27 @@ app.post("/unfavorite/:id", function(req, res){
 
 });
 
+app.post("/notes/:id", function(req, res){
+  var articleID = req.params.id;
+  var newNote = new Note({body: req.body.text});
+
+  newNote.save(function(err, doc){
+    if (err) {
+      console.log(err);
+    } else {
+      Article.findOneAndUpdate({"_id":articleID}, {$push: {"notes": doc._id}})
+      .exec(function(err, doc){
+        if (err){
+          console.log(err);
+        }else {
+          res.send(200);
+        }
+      });
+    }
+  });
+
+});
+
 app.get("/notes/:id", function(req, res){
   var articleID = req.params.id;
   console.log(articleID);
@@ -98,33 +126,6 @@ app.get("/notes/:id", function(req, res){
     }
   })
 
-});
-
-app.get("/test", function(req, res){
-  // var newArticle = new Article({title: "test", link:"test"});
-  // newArticle.save(function(err, doc){
-  //   if (err){
-  //     console.log(err);
-  //   }else {
-  //     console.log(doc);
-  //   }
-  // });
-
-  var newNote = new Note({body: "test"});
-  newNote.save(function(err, doc){
-    if (err) {
-      console.log(err);
-    } else {
-      Article.findOneAndUpdate({"title":"test"}, {$push: {"notes": doc._id}})
-      .exec(function(err, doc){
-        if (err){
-          console.log(err);
-        }else {
-          res.json(doc);
-        }
-      });
-    }
-  });
 });
 
 app.get("/populatetest", function(req, res){
