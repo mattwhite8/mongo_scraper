@@ -1,8 +1,9 @@
 //Dependencies
 var express = require("express");
 var bodyParser = require("body-parser");
-var logger = require("morgan");
 var mongoose = require("mongoose");
+//Handlebars
+var exphbs = require("express-handlebars");
 //Require models
 var Article = require("./models/Article.js");
 var Note = require("./models/Note.js");
@@ -14,15 +15,19 @@ mongoose.Promise = Promise;
 
 //Initialize express
 var app = express();
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+var PORT = process.env.PORT || 3000;
 
 //Use morgan and body parser with the app
-app.use(logger("dev"));
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+// app.use(logger("dev"));
+// app.use(bodyParser.urlencoded({
+//   extended: false
+// }));
 
 //Make public a static dir
-app.use(express.static("public"));
+app.use(express.static("app"));
 
 //DB config with mongoose
 mongoose.connect("mongodb://localhost/scraper");
@@ -36,9 +41,27 @@ db.once("open", function(){
   console.log("Mongoose connection successful");
 });
 
-app.get("/test", function(req, res){
-  var newNote = new Note({title: "test", body: "test"});
+app.get("/", function(req, res){
+  Article.find({}, function(err, doc){
+    var hbsobj = {
+      articles: doc
+    }
+    console.log(hbsobj);
+    res.render("index", hbsobj);
+  });
+});
 
+app.get("/test", function(req, res){
+  // var newArticle = new Article({title: "test", link:"test"});
+  // newArticle.save(function(err, doc){
+  //   if (err){
+  //     console.log(err);
+  //   }else {
+  //     console.log(doc);
+  //   }
+  // });
+
+  var newNote = new Note({title: "test", body: "test"});
   newNote.save(function(err, doc){
     if (err) {
       console.log(err);
@@ -55,7 +78,7 @@ app.get("/test", function(req, res){
   });
 });
 
-app.get("/populate", function(req, res){
+app.get("/populatetest", function(req, res){
   Article.findOne({"title":"test"})
   .populate("notes")
   .exec(function(err, doc){
@@ -64,7 +87,7 @@ app.get("/populate", function(req, res){
     }else {
       res.json(doc);
     }
-  })
+  });
 });
 
 app.get("/remove", function(req, res){
@@ -104,10 +127,10 @@ app.get("/scraper", function(req, res){
 
     });
   });
-  res.send('done');
+  res.send(200);
 });
 
 //Listen on PORT
-app.listen(3000, function(){
-  console.log("App running on port 3000");
+app.listen(PORT, function(){
+  console.log("App running on port " + PORT );
 })
