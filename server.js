@@ -128,26 +128,29 @@ app.get("/notes/:id", function(req, res){
 
 });
 
-app.get("/populatetest", function(req, res){
-  Article.findOne({"title":"test"})
-  .populate("notes")
-  .exec(function(err, doc){
-    if(err){
-      console.log(err);
-    }else {
-      res.json(doc);
-    }
-  });
-});
+// app.get("/populatetest", function(req, res){
+//   Article.findOne({"title":"test"})
+//   .populate("notes")
+//   .exec(function(err, doc){
+//     if(err){
+//       console.log(err);
+//     }else {
+//       res.json(doc);
+//     }
+//   });
+// });
 
-app.get("/remove", function(req, res){
-  Note.remove({"_id":"58f8241081c775578cb9c022"}, function(err){
+app.post("/remove/:id", function(req, res){
+  var _id = req.params.id;
+
+  Note.remove({"_id":_id}, function(err){
     if(err){
       console.log(err);
     }else{
-      res.send('done');
+      res.send(200);
     }
   });
+  
 });
 
 app.get("/scraper", function(req, res){

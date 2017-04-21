@@ -60,14 +60,38 @@ $(document).ready(function(){
         $("#title").text(data.title);
         $("#resultsModal").modal("toggle");
 
+        $(".note-body").remove();
+        $(".delete-button").remove();
+
         for(var i = 0; i < data.notes.length; i++){
           var newDiv = $("<div>").text(data.notes[i].body);
+          newDiv.attr('class', 'note-body');
+          var newButton = $("<button>").text('Delete');
+          newButton.attr('class', 'delete-button');
+          newButton.attr('data-id', data.notes[i]._id);
+
           $("#modal-insert").append(newDiv);
+          $("#modal-insert").append(newButton);
         }
 
       })
       .fail(function(err){
         console.log(err);
+      });
+
+    });
+
+    $(".container").on('click', ".delete-button", function(){
+      _id = $(this).attr('data-id');
+
+      $.post("/remove/" + _id, function(){
+        console.log('removing');
+      })
+      .then(function(){
+        location.reload();
+      })
+      .fail(function(err){
+        alert(JSON.stringify(err));
       });
 
     });
