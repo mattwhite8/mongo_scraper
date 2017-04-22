@@ -1,3 +1,20 @@
 body {
   padding-top: 70px;
+  background-color: black;
+}
+
+ul {
+  padding-left: 0;
+  color: white;
+  list-style: none;
+}
+
+.container {
+  background: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
+  padding: 0;
+}
+
+.row {
+  background-color: black;
+  margin: 1px;
 }
