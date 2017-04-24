@@ -31,7 +31,7 @@ var PORT = process.env.PORT || 3000;
 app.use(express.static("app"));
 
 //DB config with mongoose
-mongoose.connect("mongodb://localhost/scraper");
+mongoose.connect("mongodb://heroku_kmjd7n2r:45lqqer81rgfldpn0gpoub1a65@ds117251.mlab.com:17251/heroku_kmjd7n2r");
 var db = mongoose.connection;
 
 db.on("error", function(err){
@@ -150,7 +150,7 @@ app.post("/remove/:id", function(req, res){
       res.send(200);
     }
   });
-  
+
 });
 
 app.get("/scraper", function(req, res){
