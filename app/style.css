@@ -3,18 +3,35 @@ body {
   background-color: black;
 }
 
+h1 {
+  color: white;
+}
+
 ul {
   padding-left: 0;
   color: white;
   list-style: none;
 }
 
-.container {
+li {
+  margin: 5px 0 5px 0;
+}
+
+button.favorite {
+  background-image: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
+  border: 0;
+}
+
+.container-fluid#inner {
   background: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
   padding: 0;
 }
 
 .row {
   background-color: black;
-  margin: 1px;
+  margin: 5px;
+}
+
+div.note-body {
+  padding: 5px 0 5px 0;
 }

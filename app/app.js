@@ -17,7 +17,7 @@ $(document).ready(function(){
 
     });
 
-    $(".container").on('click', '.favorite', function(){
+    $("#inner").on('click', '.favorite', function(){
       _id = $(this).attr('data-id');
 
       $.post("/favorite/" + _id, function(){
@@ -32,7 +32,7 @@ $(document).ready(function(){
 
     });
 
-    $(".container").on('click', '.unfavorite', function(){
+    $("#inner").on('click', '.unfavorite', function(){
       _id = $(this).attr('data-id');
 
       $.post("/unfavorite/" + _id, function(){
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
     });
 
-    $(".container").on('click', 'p', function(){
+    $("#inner").on('click', 'p', function(){
       console.log('clicked p');
       _id = $(this).attr('data-id');
       console.log(_id);
@@ -81,7 +81,7 @@ $(document).ready(function(){
 
     });
 
-    $(".container").on('click', ".delete-button", function(){
+    $(".container-fluid").on('click', ".delete-button", function(){
       _id = $(this).attr('data-id');
 
       $.post("/remove/" + _id, function(){
@@ -96,7 +96,7 @@ $(document).ready(function(){
 
     });
 
-    $(".container").on('click', '#submitNote', function(event){
+    $(".container-fluid").on('click', '#submitNote', function(event){
       event.preventDefault();
 
       var note = {
