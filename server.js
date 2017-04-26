@@ -31,7 +31,8 @@ var PORT = process.env.PORT || 3000;
 app.use(express.static("app"));
 
 //DB config with mongoose
-mongoose.connect("mongodb://heroku_kmjd7n2r:45lqqer81rgfldpn0gpoub1a65@ds117251.mlab.com:17251/heroku_kmjd7n2r");
+//mongoose.connect("mongodb://heroku_kmjd7n2r:45lqqer81rgfldpn0gpoub1a65@ds117251.mlab.com:17251/heroku_kmjd7n2r");
+mongoose.connect("mongodb://localhost:scraper");
 var db = mongoose.connection;
 
 db.on("error", function(err){
@@ -127,18 +128,6 @@ app.get("/notes/:id", function(req, res){
   })
 
 });
-
-// app.get("/populatetest", function(req, res){
-//   Article.findOne({"title":"test"})
-//   .populate("notes")
-//   .exec(function(err, doc){
-//     if(err){
-//       console.log(err);
-//     }else {
-//       res.json(doc);
-//     }
-//   });
-// });
 
 app.post("/remove/:id", function(req, res){
   var _id = req.params.id;

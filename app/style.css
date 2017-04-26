@@ -5,6 +5,7 @@ body {
 
 h1 {
   color: white;
+  font-family: 'Monoton', cursive;
 }
 
 ul {
@@ -17,9 +18,43 @@ li {
   margin: 5px 0 5px 0;
 }
 
+p {
+  font-family: 'Raleway', sans-serif;
+}
+
 button.favorite {
   background-image: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
   border: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+button.unfavorite {
+  background-image: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
+  border: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+nav.navbar.navbar-default.navbar-fixed-top {
+  background: linear-gradient(90deg,#f7c626 15%,#f68c2f 40%,#e5127d 85%);
+}
+
+.navbar-default .navbar-brand {
+  color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+  font-family: 'Monoton', cursive;
+}
+
+.navbar-default .navbar-nav>.active>a {
+  color: white;
+  background: transparent;
+  border-style: solid;
+}
+
+a.navbar-brand {
+  font-family: 'Monoton', cursive;
 }
 
 .container-fluid#inner {
